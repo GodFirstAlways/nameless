@@ -1,0 +1,192 @@
+.au-wrap {
+  padding: 24px;
+  color: #fff;
+  background: #0b1220;
+  min-height: calc(100vh - 96px);
+}
+
+.au-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.au-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+
+.au-sub {
+  opacity: 0.7;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.au-actions { display: flex; gap: 10px; }
+
+.au-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.au-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.au-btn-primary { background: rgba(34,211,238,0.16); border-color: rgba(34,211,238,0.26); }
+.au-btn-danger { background: rgba(248,113,113,0.14); border-color: rgba(248,113,113,0.25); width: 100%; margin-top: 10px; }
+
+.au-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.au-sidebar {
+  position: sticky;
+  top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.au-card {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.au-card-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.au-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.au-input {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+.au-row {
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  gap: 10px;
+}
+
+.au-hint { opacity: 0.65; font-size: 12px; margin-top: 10px; }
+.au-msg { opacity: 0.85; font-size: 12px; margin-top: 10px; }
+.au-error { background: rgba(248,113,113,0.14); border: 1px solid rgba(248,113,113,0.25); padding: 12px; border-radius: 12px; margin-bottom: 12px; }
+
+.au-tablewrap {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.au-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.au-table th, .au-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-align: left;
+  font-size: 14px;
+}
+
+.au-table th { opacity: 0.75; font-weight: 700; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; }
+.au-muted { opacity: 0.7; padding: 16px; }
+
+.au-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+.au-id { opacity: 0.55; margin-left: 6px; font-size: 12px; }
+
+.au-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+}
+
+.au-badge-owner { background: rgba(34,211,238,0.14); border-color: rgba(34,211,238,0.26); }
+.au-badge-co_owner { background: rgba(34,211,238,0.10); border-color: rgba(34,211,238,0.22); }
+.au-badge-reseller { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.22); }
+.au-badge-staff { background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,0.22); }
+.au-badge-customer { background: rgba(255,255,255,0.06); }
+
+.au-pill {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.au-pill-ok { background: rgba(34,211,238,0.12); border-color: rgba(34,211,238,0.22); }
+.au-pill-warn { background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,0.22); }
+.au-pill-bad { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.22); }
+
+.au-menu-cell { width: 52px; position: relative; }
+.au-menu-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.au-menu {
+  position: absolute;
+  right: 10px;
+  top: 46px;
+  background: rgba(10,10,10,0.92);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 50;
+}
+.au-menu-item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.au-menu-item:hover { background: rgba(255,255,255,0.08); }
+
+@media (max-width: 980px) {
+  .au-grid { grid-template-columns: 1fr; }
+  .au-sidebar { position: static; }
+}

@@ -1,0 +1,919 @@
+/* ============================================
+   CUSTOMER DASHBOARD - CYBERPUNK TECH AESTHETIC
+   ============================================ */
+
+/* ===================
+   ENHANCED TIME BALANCES
+   =================== */
+
+.time-balances-card {
+  @apply col-span-full;
+  @apply bg-gradient-to-br from-slate-900/90 to-slate-800/80;
+  @apply border-2 border-cyan-500/20;
+  @apply shadow-2xl shadow-cyan-500/10;
+}
+
+.time-balance-item {
+  @apply relative overflow-hidden;
+  @apply p-5 mb-4 last:mb-0;
+  @apply rounded-xl;
+  @apply bg-gradient-to-r from-slate-800/50 to-slate-900/50;
+  @apply border border-white/5;
+  @apply transition-all duration-500 ease-out;
+  @apply hover:scale-[1.02] hover:shadow-xl hover:shadow-cyan-500/20;
+  @apply hover:border-cyan-500/40;
+}
+
+.time-balance-item::before {
+  content: '';
+  @apply absolute left-0 top-0 bottom-0 w-1;
+  @apply bg-gradient-to-b from-cyan-400 via-cyan-500 to-blue-600;
+  @apply transition-all duration-500;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+}
+
+.time-balance-item:hover::before {
+  @apply w-2;
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.8);
+}
+
+.time-balance-item.expired {
+  @apply opacity-50;
+}
+
+.time-balance-item.expired::before {
+  @apply from-red-400 to-red-700;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+.balance-header {
+  @apply flex items-center gap-4 mb-3;
+}
+
+.balance-icon {
+  @apply text-4xl;
+  @apply transition-transform duration-500;
+  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.6));
+}
+
+.time-balance-item:hover .balance-icon {
+  @apply scale-110;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.6));
+  }
+  50% { 
+    filter: drop-shadow(0 0 20px rgba(6, 182, 212, 1));
+  }
+}
+
+.balance-info {
+  @apply flex-1;
+}
+
+.balance-info h4 {
+  @apply text-lg font-bold text-white mb-1;
+  @apply tracking-wide;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+}
+
+.balance-status {
+  @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase;
+  @apply tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.balance-status.active {
+  @apply bg-emerald-500/20 border-2 border-emerald-400/50 text-emerald-300;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.balance-status.expired {
+  @apply bg-red-500/20 border-2 border-red-400/50 text-red-300;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+.balance-time {
+  @apply text-right;
+}
+
+.time-value {
+  @apply block text-3xl font-black;
+  @apply bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400 bg-clip-text text-transparent;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply tracking-tight;
+  text-shadow: 0 0 30px rgba(6, 182, 212, 0.5);
+}
+
+.time-label {
+  @apply block text-xs text-gray-400 uppercase tracking-widest mt-1;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.total-time {
+  @apply flex items-center justify-between;
+  @apply mt-8 pt-6 border-t-2 border-cyan-500/20;
+}
+
+.total-label {
+  @apply text-sm font-bold text-cyan-300 uppercase tracking-widest;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.total-value {
+  @apply text-4xl font-black;
+  @apply bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400 bg-clip-text text-transparent;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  text-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+}
+
+/* ===================
+   ENHANCED DOWNLOADS GRID
+   =================== */
+
+.downloads-grid {
+  @apply grid gap-8;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.download-card {
+  @apply relative;
+  @apply rounded-2xl;
+  @apply bg-gradient-to-br from-slate-900/95 to-slate-800/90;
+  @apply border-2 border-cyan-500/20;
+  @apply overflow-hidden;
+  @apply transition-all duration-700 ease-out;
+  @apply hover:scale-[1.04];
+  @apply hover:border-cyan-400/60;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.download-card::before {
+  content: '';
+  @apply absolute inset-0 opacity-0;
+  @apply bg-gradient-to-br from-cyan-500/10 to-blue-500/10;
+  @apply transition-opacity duration-700;
+  @apply pointer-events-none;
+}
+
+.download-card:hover::before {
+  @apply opacity-100;
+}
+
+.download-card.accessible {
+  @apply border-cyan-400/40;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5), 
+    0 0 30px rgba(6, 182, 212, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.download-card.accessible:hover {
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.7), 
+    0 0 50px rgba(6, 182, 212, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.download-card.locked {
+  @apply opacity-60 cursor-not-allowed;
+  @apply hover:scale-100;
+}
+
+.download-image {
+  @apply relative h-56 overflow-hidden;
+  @apply bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950;
+}
+
+.download-image::after {
+  content: '';
+  @apply absolute inset-0;
+  @apply bg-gradient-to-t from-slate-900 via-transparent to-transparent;
+  @apply opacity-80;
+}
+
+.download-card:hover .download-image::after {
+  @apply opacity-60;
+}
+
+.download-image img {
+  @apply w-full h-full object-cover;
+  @apply transition-all duration-700 ease-out;
+  @apply brightness-75;
+  filter: brightness(0.75) saturate(1.1);
+}
+
+.download-card:hover .download-image img {
+  @apply scale-110;
+  filter: brightness(0.9) saturate(1.1);
+}
+
+.lock-overlay {
+  @apply absolute inset-0 z-10;
+  @apply bg-black/85 backdrop-blur-md;
+  @apply flex items-center justify-center;
+  @apply text-7xl;
+  animation: lock-pulse 3s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+}
+
+@keyframes lock-pulse {
+  0%, 100% { 
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.download-details {
+  @apply relative z-10 p-6;
+  @apply bg-gradient-to-b from-slate-900/50 to-slate-950/80;
+  @apply backdrop-blur-sm;
+}
+
+.download-name {
+  @apply text-xl font-black text-white mb-2;
+  @apply tracking-wide;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply transition-all duration-300;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.download-card:hover .download-name {
+  @apply text-cyan-300;
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+}
+
+.download-version {
+  @apply inline-flex items-center px-3 py-1.5 rounded-lg;
+  @apply bg-cyan-500/10 border border-cyan-500/30;
+  @apply text-xs font-bold text-cyan-300 uppercase;
+  @apply mb-3;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+}
+
+.download-desc {
+  @apply text-sm text-gray-400 leading-relaxed;
+  @apply mb-5 min-h-[4rem];
+}
+
+.download-btn {
+  @apply w-full px-5 py-4 rounded-xl;
+  @apply flex items-center justify-center gap-3;
+  @apply font-bold text-sm uppercase tracking-widest;
+  @apply transition-all duration-500;
+  @apply border-2;
+}
+
+.download-btn.accessible {
+  @apply bg-gradient-to-r from-cyan-500 via-cyan-600 to-blue-600;
+  @apply hover:from-cyan-400 hover:via-cyan-500 hover:to-blue-500;
+  @apply border-transparent;
+  @apply text-white;
+  box-shadow: 
+    0 4px 20px rgba(6, 182, 212, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.download-btn.accessible:hover {
+  @apply -translate-y-1;
+  box-shadow: 
+    0 8px 30px rgba(6, 182, 212, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.download-btn.accessible .btn-icon {
+  @apply transition-transform duration-500;
+}
+
+.download-btn.accessible:hover .btn-icon {
+  animation: download-bounce 0.6s ease-in-out;
+}
+
+@keyframes download-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+.download-btn.locked {
+  @apply bg-slate-800/30 border-slate-700/50;
+  @apply text-gray-500 cursor-not-allowed opacity-50;
+}
+
+/* ===================
+   VERSION HISTORY SECTION
+   =================== */
+
+.version-history-toggle {
+  @apply w-full mt-4 px-4 py-2.5 rounded-lg;
+  @apply flex items-center justify-center gap-2;
+  @apply bg-slate-900/40 border border-white/10;
+  @apply text-gray-400 text-xs font-bold uppercase tracking-wider;
+  @apply transition-all duration-300;
+  @apply hover:bg-slate-800/60 hover:border-cyan-500/30 hover:text-cyan-300;
+  @apply cursor-pointer;
+}
+
+.version-history-toggle .toggle-icon {
+  @apply transition-transform duration-300;
+}
+
+.version-history-toggle.expanded .toggle-icon {
+  @apply rotate-180;
+}
+
+.version-history-content {
+  @apply mt-3 pt-4 border-t border-white/10;
+  @apply space-y-2;
+  @apply max-h-0 overflow-hidden opacity-0;
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.version-history-content.expanded {
+  @apply max-h-96 opacity-100;
+}
+
+.version-item {
+  @apply flex items-center justify-between gap-4;
+  @apply p-3 rounded-lg;
+  @apply bg-slate-950/30 border border-white/5;
+  @apply transition-all duration-300;
+  @apply hover:bg-slate-900/50 hover:border-cyan-500/20;
+}
+
+.version-info {
+  @apply flex-1;
+}
+
+.version-number {
+  @apply text-sm font-bold text-white mb-1;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.version-date {
+  @apply text-xs text-gray-500;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.version-badge {
+  @apply px-2 py-1 rounded text-xs font-bold uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.version-badge.latest {
+  @apply bg-cyan-500/20 border border-cyan-400/50 text-cyan-300;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.version-badge.stable {
+  @apply bg-emerald-500/20 border border-emerald-400/50 text-emerald-300;
+}
+
+.version-badge.legacy {
+  @apply bg-amber-500/20 border border-amber-400/50 text-amber-300;
+}
+
+.version-badge.deprecated {
+  @apply bg-red-500/20 border border-red-400/50 text-red-300;
+}
+
+.version-download-btn {
+  @apply px-4 py-2 rounded-lg;
+  @apply bg-gradient-to-r from-cyan-500/80 to-blue-600/80;
+  @apply hover:from-cyan-500 hover:to-blue-600;
+  @apply text-white text-xs font-bold uppercase tracking-wider;
+  @apply transition-all duration-300;
+  @apply hover:scale-105;
+  box-shadow: 0 2px 10px rgba(6, 182, 212, 0.3);
+}
+
+.version-download-btn:hover {
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.5);
+}
+
+.version-notes {
+  @apply mt-2 pt-2 border-t border-white/5;
+  @apply text-xs text-gray-500 italic;
+}
+
+/* ===================
+   ENHANCED REDEEM CARD
+   =================== */
+
+.redeem-container {
+  @apply max-w-2xl mx-auto;
+}
+
+.redeem-card {
+  @apply bg-gradient-to-br from-slate-900/95 to-slate-800/90;
+  @apply border-2 border-cyan-500/30;
+  @apply shadow-2xl;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(6, 182, 212, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  @apply transition-all duration-700;
+}
+
+.redeem-card:hover {
+  @apply border-cyan-400/50;
+  box-shadow: 
+    0 25px 80px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(6, 182, 212, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.redeem-content {
+  @apply text-center;
+}
+
+.redeem-icon-display {
+  @apply text-7xl mb-6;
+  animation: float-spin 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.6));
+}
+
+@keyframes float-spin {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% { 
+    transform: translateY(-15px) rotate(5deg);
+  }
+  75% { 
+    transform: translateY(-15px) rotate(-5deg);
+  }
+}
+
+.redeem-title {
+  @apply text-3xl font-black text-white mb-3;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply tracking-wide;
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+}
+
+.redeem-description {
+  @apply text-gray-400 mb-8 text-base;
+}
+
+.redeem-form {
+  @apply space-y-5;
+}
+
+.redeem-input {
+  @apply w-full px-6 py-4 rounded-xl;
+  @apply bg-slate-950/50 border-2 border-cyan-500/30;
+  @apply text-white text-center text-lg font-bold uppercase tracking-widest;
+  font-family: 'JetBrains Mono', monospace;
+  @apply placeholder:text-gray-600 placeholder:normal-case placeholder:tracking-normal;
+  @apply transition-all duration-500;
+  @apply focus:outline-none focus:border-cyan-400/60 focus:bg-slate-950/70;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.redeem-input:focus {
+  @apply scale-[1.02];
+  box-shadow: 
+    inset 0 2px 10px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(6, 182, 212, 0.3);
+}
+
+.redeem-btn {
+  @apply relative overflow-hidden;
+  @apply w-full px-6 py-5 rounded-xl;
+  @apply bg-gradient-to-r from-cyan-500 via-cyan-600 to-blue-600;
+  @apply hover:from-cyan-400 hover:via-cyan-500 hover:to-blue-500;
+  @apply text-white font-black text-base uppercase tracking-widest;
+  @apply transition-all duration-500;
+  @apply hover:scale-[1.02];
+  box-shadow: 
+    0 6px 25px rgba(6, 182, 212, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.redeem-btn:hover {
+  box-shadow: 
+    0 10px 40px rgba(6, 182, 212, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.redeem-btn::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full;
+  @apply bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  @apply -translate-x-full;
+  @apply transition-transform duration-1000;
+}
+
+.redeem-btn:hover::before {
+  @apply translate-x-full;
+}
+
+.redeem-info {
+  @apply mt-8 pt-6 border-t border-white/10;
+  @apply space-y-2;
+}
+
+.redeem-info p {
+  @apply text-xs text-gray-500;
+}
+
+/* ===================
+   ENHANCED HWID RESET
+   =================== */
+
+.hwid-container {
+  @apply max-w-3xl mx-auto;
+}
+
+.warning-box {
+  @apply flex items-start gap-5;
+  @apply p-6 mb-8 rounded-2xl;
+  @apply bg-gradient-to-br from-amber-500/10 to-orange-500/10;
+  @apply border-2 border-amber-400/30;
+  box-shadow: 
+    0 10px 40px rgba(251, 191, 36, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.warning-icon {
+  @apply text-5xl;
+  animation: warning-pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
+}
+
+@keyframes warning-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
+  }
+  50% { 
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 25px rgba(251, 191, 36, 0.9));
+  }
+}
+
+.warning-content h4 {
+  @apply text-lg font-black text-amber-300 mb-2;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply tracking-wide;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+}
+
+.warning-content p {
+  @apply text-sm text-amber-100/90 leading-relaxed;
+}
+
+.hwid-products {
+  @apply space-y-4;
+}
+
+.hwid-product {
+  @apply flex items-center justify-between gap-6;
+  @apply p-6 rounded-xl;
+  @apply bg-gradient-to-r from-slate-900/60 to-slate-800/60;
+  @apply border-2 border-white/5;
+  @apply transition-all duration-500;
+  @apply hover:bg-slate-800/70 hover:border-cyan-500/30;
+  @apply hover:scale-[1.01];
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hwid-product:hover {
+  box-shadow: 0 8px 30px rgba(6, 182, 212, 0.2);
+}
+
+.hwid-product-info {
+  @apply flex items-center gap-5;
+}
+
+.hwid-icon {
+  @apply text-5xl;
+  @apply transition-all duration-500;
+  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.5));
+}
+
+.hwid-product:hover .hwid-icon {
+  @apply scale-110 rotate-12;
+  filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.8));
+}
+
+.hwid-details h4 {
+  @apply text-xl font-black text-white mb-2;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply tracking-wide;
+}
+
+.hwid-cooldown {
+  @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-lg;
+  @apply text-xs font-bold uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.hwid-cooldown.ready {
+  @apply bg-emerald-500/20 border-2 border-emerald-400/50 text-emerald-300;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.hwid-cooldown.cooldown {
+  @apply bg-red-500/20 border-2 border-red-400/50 text-red-300;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+.hwid-reset-btn {
+  @apply px-6 py-3 rounded-xl;
+  @apply bg-gradient-to-r from-cyan-500 to-blue-600;
+  @apply hover:from-cyan-400 hover:to-blue-500;
+  @apply text-white font-black text-sm uppercase tracking-wider;
+  @apply transition-all duration-500;
+  @apply hover:scale-105;
+  box-shadow: 
+    0 4px 20px rgba(6, 182, 212, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.hwid-reset-btn:hover {
+  box-shadow: 
+    0 8px 30px rgba(6, 182, 212, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.hwid-reset-btn:disabled {
+  @apply bg-slate-800/30 border-2 border-slate-700/50;
+  @apply text-gray-500 opacity-50 cursor-not-allowed;
+  @apply hover:scale-100;
+  box-shadow: none;
+}
+
+/* ===================
+   ENHANCED SETTINGS
+   =================== */
+
+.account-info {
+  @apply space-y-4;
+}
+
+.info-row {
+  @apply grid items-center gap-4;
+  @apply p-4 rounded-xl;
+  @apply bg-gradient-to-r from-slate-900/40 to-slate-800/40;
+  @apply border border-white/5;
+  @apply transition-all duration-300;
+  @apply hover:bg-slate-800/60 hover:border-cyan-500/20;
+  grid-template-columns: 170px 1fr;
+}
+
+.info-row:hover {
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.1);
+}
+
+.info-label {
+  @apply text-sm font-bold text-cyan-300 uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.info-value {
+  @apply text-sm font-black text-white;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply tracking-wide;
+}
+
+/* ===================
+   UPDATES SECTION
+   =================== */
+
+.updates-container {
+  @apply space-y-6;
+}
+
+.update-item {
+  @apply p-6 rounded-2xl;
+  @apply bg-gradient-to-br from-slate-900/60 to-slate-800/60;
+  @apply border-2 border-white/5;
+  @apply transition-all duration-500;
+  @apply hover:bg-slate-800/70 hover:border-cyan-500/30;
+  @apply hover:scale-[1.01];
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.update-item:hover {
+  box-shadow: 0 10px 40px rgba(6, 182, 212, 0.15);
+}
+
+.update-header {
+  @apply flex items-start justify-between gap-4 mb-4;
+}
+
+.update-title {
+  @apply text-xl font-black text-white;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply tracking-wide;
+}
+
+.update-date {
+  @apply text-xs text-cyan-400 font-bold uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.update-content {
+  @apply text-sm text-gray-300 leading-relaxed;
+  @apply whitespace-pre-line;
+}
+
+.update-titleblock { @apply min-w-0; }
+.update-title-row { @apply flex items-center gap-2 flex-wrap; }
+.update-title-text { @apply text-xl font-black text-white; font-family: 'Orbitron', 'JetBrains Mono', monospace; @apply tracking-wide; }
+
+.update-chip {
+  @apply inline-flex items-center px-2.5 py-1 rounded-lg;
+  @apply bg-black/30 border border-white/10 text-gray-200;
+  @apply text-xs font-bold uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.update-chip-status { @apply bg-white/5; }
+.update-chip-status.stable { @apply bg-emerald-500/15 border-emerald-400/40 text-emerald-300; }
+.update-chip-status.old_stable { @apply bg-teal-500/15 border-teal-400/40 text-teal-200; }
+.update-chip-status.unstable { @apply bg-amber-500/15 border-amber-400/40 text-amber-200; }
+.update-chip-status.maintained { @apply bg-cyan-500/15 border-cyan-400/40 text-cyan-200; }
+.update-chip-status.legacy_continued { @apply bg-indigo-500/15 border-indigo-400/40 text-indigo-200; }
+.update-chip-status.discontinued { @apply bg-rose-500/15 border-rose-400/40 text-rose-200; }
+
+/* Version badges: support the full tag set */
+.version-badge.old_stable { @apply bg-teal-500/20 border border-teal-400/50 text-teal-200; }
+.version-badge.unstable { @apply bg-amber-500/20 border border-amber-400/50 text-amber-200; }
+.version-badge.maintained { @apply bg-cyan-500/20 border border-cyan-400/50 text-cyan-200; }
+.version-badge.legacy_continued { @apply bg-indigo-500/20 border border-indigo-400/50 text-indigo-200; }
+.version-badge.discontinued { @apply bg-rose-500/20 border border-rose-400/50 text-rose-200; }
+
+.version-item.is-current { @apply border-cyan-500/30 bg-slate-900/60; }
+
+/* ===================
+   RESPONSIVE ENHANCEMENTS
+   =================== */
+
+@media (max-width: 768px) {
+  .downloads-grid { 
+    grid-template-columns: 1fr; 
+  }
+  
+  .download-card { 
+    @apply hover:scale-100; 
+  }
+  
+  .download-image { 
+    @apply h-48; 
+  }
+  
+  .total-value { 
+    @apply text-3xl; 
+  }
+  
+  .time-value {
+    @apply text-2xl;
+  }
+  
+  .redeem-container,
+  .hwid-container {
+    @apply px-4;
+  }
+}
+
+@media (max-width: 480px) {
+  .download-details { 
+    @apply p-4; 
+  }
+  
+  .download-name { 
+    @apply text-lg; 
+  }
+  
+  .download-desc { 
+    @apply min-h-[3rem] text-xs; 
+  }
+  
+  .lock-overlay { 
+    @apply text-5xl; 
+  }
+  
+  .redeem-icon-display {
+    @apply text-5xl;
+  }
+  
+  .redeem-title {
+    @apply text-2xl;
+  }
+  
+  .hwid-product {
+    @apply flex-col items-start gap-4;
+  }
+  
+  .hwid-reset-btn {
+    @apply w-full;
+  }
+}
+
+/* HWID summary + settings modal (shared with reseller modal styles) */
+.hwid-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 14px;
+}
+
+.hwid-summary-title {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.hwid-summary-metrics {
+  display: flex;
+  gap: 14px;
+  opacity: 0.9;
+}
+
+.hwid-meta {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.hwid-tokens {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-top: 6px;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+  margin-bottom: 14px;
+}
+
+.settings-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-label {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.settings-value {
+  display: block;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.settings-subtitle {
+  margin: 10px 0 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.table-wrapper {
+  overflow: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.settings-table th,
+.settings-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-table thead th {
+  font-weight: 700;
+  opacity: 0.85;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+@media (max-width: 700px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
