@@ -126,7 +126,7 @@ export function ProductDetail() {
 
   const [activeImage, setActiveImage] = useState(0);
   const [selectedPlanId, setSelectedPlanId] = useState<string>(() => product?.plans?.[0]?.id || '');
-  const [galleryImages, setGalleryImages] = useState<string[]>(() => product?.images || []);
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [media, setMedia] = useState<PublicMediaItem[] | null>(null);
   const [serverMeta, setServerMeta] = useState<ProductMeta | null>(null);
   const [planPrices, setPlanPrices] = useState<{ currency: string; prices: Record<string, number> } | null>(null);
@@ -190,7 +190,7 @@ export function ProductDetail() {
     setActiveImage(0);
     setErr(null);
     setLicenseKey(null);
-    setGalleryImages(product?.images || []);
+    setGalleryImages([]);
 
     // Load server-driven media/meta + pricing (cached locally)
     if (product?.appCode) {
@@ -201,13 +201,13 @@ export function ProductDetail() {
           const m = await fetchProductMediaWithCache(appCode, 12 * 60 * 60 * 1000);
           if (m) setMedia(m);
 
-          // Keep legacy galleryImages as a fallback (if server has no media yet)
-          if (!m || !m.length) {
-            const imgs = await fetchProductImagesWithCache(appCode, 12 * 60 * 60 * 1000);
-            if (imgs && imgs.length) setGalleryImages(imgs);
-          } else {
+          // Prefer server media images, but don't fall back to local placeholders.
+          if (m && m.length) {
             const imgs = m.filter((x) => x.type === 'image').map((x) => x.url);
-            if (imgs.length) setGalleryImages(imgs);
+            setGalleryImages(imgs);
+          } else {
+            const imgs = await fetchProductImagesWithCache(appCode, 12 * 60 * 60 * 1000);
+            setGalleryImages(imgs || []);
           }
         } catch {
           // ignore; fallback to bundled images
@@ -396,14 +396,18 @@ return (
               Featured video
             </div>
           </div>
-        ) : (
+        ) : galleryImages.length > 0 ? (
           <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black">
             <img
-              src={(galleryImages.length ? galleryImages : product.images)[Math.min(activeImage, (galleryImages.length ? galleryImages : product.images).length - 1)]}
+              src={galleryImages[Math.min(activeImage, galleryImages.length - 1)]}
               alt={`${displayName} screenshot ${activeImage + 1}`}
               className="w-full h-full object-contain bg-black"
               loading="eager"
               decoding="async"
+              onError={(e) => {
+                const el = e.currentTarget;
+                el.style.display = 'none';
+              }}
             />
             {featuredVideo ? (
               <button
@@ -415,21 +419,38 @@ return (
               </button>
             ) : null}
           </div>
+        ) : (
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black grid place-items-center">
+            <div className="text-center px-4">
+              <p className="text-sm text-gray-300">No screenshots uploaded yet.</p>
+              <p className="mt-1 text-xs text-gray-500">Upload product images on the server and they will appear here.</p>
+            </div>
+          </div>
         )}
             </div>
 
-            <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
-              {(galleryImages.length ? galleryImages : product.images).map((src, idx) => (
-                <button
-                  key={`${product.slug}-img-${idx}`}
-                  type="button"
-                  onClick={() => { setActiveImage(idx); setMediaView('image'); setMediaViewLocked(true); }}
-                  className={`flex-shrink-0 rounded-xl border ${idx === activeImage ? 'border-cyan-400/60' : 'border-white/10'} bg-white/5 hover:bg-white/10 transition p-1`}
-                >
-                  <img src={src} alt={`thumb ${idx + 1}`} className="h-20 w-32 object-cover rounded-lg" />
-                </button>
-              ))}
-            </div>
+            {galleryImages.length > 0 ? (
+              <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
+                {galleryImages.map((src, idx) => (
+                  <button
+                    key={`${product.slug}-img-${idx}`}
+                    type="button"
+                    onClick={() => { setActiveImage(idx); setMediaView('image'); setMediaViewLocked(true); }}
+                    className={`flex-shrink-0 rounded-xl border ${idx === activeImage ? 'border-cyan-400/60' : 'border-white/10'} bg-white/5 hover:bg-white/10 transition p-1`}
+                  >
+                    <img
+                      src={src}
+                      alt={`thumb ${idx + 1}`}
+                      className="h-20 w-32 object-cover rounded-lg"
+                      onError={(e) => {
+                        const btn = e.currentTarget.closest('button') as HTMLButtonElement | null;
+                        if (btn) btn.style.display = 'none';
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+            ) : null}
 
             <h1 className="mt-8 text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
               {displayName}
@@ -521,6 +542,16 @@ return (
                     </p>
                     <div id="paypal-buttons" />
                     {busy && <p className="mt-3 text-xs text-gray-400">Processing…</p>}
+                    {checkingStatus && <p className="mt-3 text-xs text-gray-400">Checking payment status…</p>}
+                    {lastOrderId && !licenseKey ? (
+                      <button
+                        type="button"
+                        onClick={() => { void checkOrderStatus(lastOrderId); }}
+                        className="mt-3 text-xs px-3 py-2 rounded-lg border border-white/10 bg-black/40 text-gray-200 hover:bg-white/10"
+                      >
+                        Check status
+                      </button>
+                    ) : null}
                   </>
                 )}
               </div>
