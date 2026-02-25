@@ -137,6 +137,8 @@ export function ProductDetail() {
   const [licenseKey, setLicenseKey] = useState<string | null>(null);
   const [lastOrderId, setLastOrderId] = useState<string | null>(null);
   const [checkingStatus, setCheckingStatus] = useState(false);
+  const [mediaView, setMediaView] = useState<'video' | 'image'>('image');
+  const [mediaViewLocked, setMediaViewLocked] = useState(false);
 
   async function checkOrderStatus(orderId: string, autoPoll = false) {
     if (!auth?.token) {
@@ -343,6 +345,16 @@ export function ProductDetail() {
       .render('#paypal-buttons');
   }, [paypalReady, product?.slug, selectedPlanId, auth?.token]);
 
+  const featuredVideo =
+    media?.find((m) => m.type === 'video' && m.featured) || media?.find((m) => m.type === 'video') || null;
+
+  // Default to video if available, but allow thumbnail clicks to switch to image view.
+  useEffect(() => {
+    if (!mediaViewLocked) {
+      setMediaView(featuredVideo ? 'video' : 'image');
+    }
+  }, [featuredVideo, mediaViewLocked]);
+
   if (!product) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white pt-24 pb-12">
@@ -361,18 +373,6 @@ export function ProductDetail() {
   const displayDescription: string[] = metaDescRaw
     ? metaDescRaw.split('\n').map((s) => s.trim()).filter(Boolean)
     : product.description;
-
-  const featuredVideo =
-    media?.find((m) => m.type === 'video' && m.featured) || media?.find((m) => m.type === 'video') || null;
-  const [mediaView, setMediaView] = useState<'video' | 'image'>('image');
-  const [mediaViewLocked, setMediaViewLocked] = useState(false);
-
-  // Default to video if available, but allow thumbnail clicks to switch to image view.
-  useEffect(() => {
-    if (!mediaViewLocked) {
-      setMediaView(featuredVideo ? 'video' : 'image');
-    }
-  }, [featuredVideo, mediaViewLocked]);
 
 
 
