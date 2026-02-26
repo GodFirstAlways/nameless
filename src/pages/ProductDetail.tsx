@@ -487,6 +487,51 @@ return (
               <h2 className="text-xl font-bold text-white">Purchase</h2>
               <p className="mt-1 text-sm text-gray-400">Select a duration and pay securely via PayPal.</p>
 
+              {/* Launch Pricing Banner */}
+              <div className="mt-4 rounded-lg bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/30 p-4">
+                <div className="flex items-start gap-2">
+                  <span className="text-lg">🎉</span>
+                  <div>
+                    <p className="text-sm font-semibold text-emerald-300">Launch Week Special!</p>
+                    <p className="text-xs text-gray-300 mt-1">
+                      Limited-time pricing for the first week. Regular prices resume after launch period.
+                    </p>
+                    <div className="mt-3 space-y-1 text-xs">
+                      <div className="flex justify-between gap-3">
+                        <span className="text-gray-400">1 Day:</span>
+                        <span className="text-white">
+                          $1.99 <span className="line-through text-gray-500 ml-1">$2.99</span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-gray-400">3 Days:</span>
+                        <span className="text-white">
+                          $4.99 <span className="line-through text-gray-500 ml-1">$6.99</span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-gray-400">1 Week:</span>
+                        <span className="text-white">
+                          $9.99 <span className="line-through text-gray-500 ml-1">$12.99</span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-gray-400">1 Month:</span>
+                        <span className="text-white">
+                          $19.99 <span className="line-through text-gray-500 ml-1">$24.99</span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-gray-400">Lifetime:</span>
+                        <span className="text-white font-semibold">
+                          $29.99 <span className="line-through text-gray-500 ml-1">$45.00</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="mt-5">
                 <label className="block text-sm text-gray-300 mb-2">Duration</label>
                 <select
