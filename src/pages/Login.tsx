@@ -136,13 +136,13 @@ export function Login() {
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Username
             </label>
-            <div className="flex items-center gap-3 rounded-lg bg-white/10 border border-white/20 px-4 py-3 focus-within:border-cyan-500 transition-colors">
-              <User className="h-5 w-5 text-gray-500 shrink-0" />
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
                 placeholder="your_username"
               />
             </div>
@@ -152,13 +152,13 @@ export function Login() {
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Password
             </label>
-            <div className="flex items-center gap-3 rounded-lg bg-white/10 border border-white/20 px-4 py-3 focus-within:border-cyan-500 transition-colors">
-              <Lock className="h-5 w-5 text-gray-500 shrink-0" />
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -169,13 +169,13 @@ export function Login() {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Confirm Password
               </label>
-              <div className="flex items-center gap-3 rounded-lg bg-white/10 border border-white/20 px-4 py-3 focus-within:border-cyan-500 transition-colors">
-                <Lock className="h-5 w-5 text-gray-500 shrink-0" />
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
+                  className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
                   placeholder="••••••••"
                 />
               </div>
@@ -221,7 +221,10 @@ export function Login() {
         </form>
 
         <p className="text-center text-gray-500 text-xs mt-6">
-          By proceeding, you agree to our 
+          By proceeding, you agree to our{' '}
+          <Link to="/tos" className="text-cyan-400 hover:text-cyan-300 underline">
+            Terms of Service
+          </Link>
         </p>
       </div>
     </div>
