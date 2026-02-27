@@ -1,0 +1,346 @@
+.aud-wrap {
+  padding: 24px;
+}
+
+.aud-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.aud-back {
+  border: none;
+  background: transparent;
+  color: inherit;
+  opacity: 0.9;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.aud-back:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.aud-title h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.aud-sub {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.aud-btn {
+  margin-left: auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.aud-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.aud-error {
+  background: rgba(255, 0, 0, 0.12);
+  border: 1px solid rgba(255, 0, 0, 0.25);
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.aud-loading {
+  opacity: 0.8;
+  padding: 12px;
+}
+
+.aud-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.aud-card {
+  grid-column: span 6;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+}
+
+.aud-card h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.aud-kv {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+.aud-kv > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+  padding-bottom: 6px;
+}
+
+.aud-kv span {
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+.aud-kv strong {
+  font-size: 13px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aud-note {
+  margin-top: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.aud-note-title {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+
+.aud-note-body {
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
+.aud-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.aud-table th,
+.aud-table td {
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+}
+
+.aud-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.aud-table tbody tr:hover {
+  background: rgba(34, 211, 238, 0.06);
+}
+
+.aud-table th {
+  opacity: 0.8;
+  font-weight: 700;
+}
+
+.aud-muted {
+  opacity: 0.75;
+  font-size: 13px;
+}
+
+.aud-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+}
+
+.aud-actions {
+  grid-column: span 12;
+}
+
+.aud-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.aud-action {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.aud-action-title {
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.aud-action-sub {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.aud-action-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.aud-input {
+  width: 100%;
+  max-width: 160px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  padding: 8px 10px;
+  border-radius: 10px;
+  outline: none;
+}
+
+@media (max-width: 1100px) {
+  .aud-card { grid-column: span 12; }
+  .aud-actions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .aud-kv { grid-template-columns: 1fr; }
+  .aud-actions-grid { grid-template-columns: 1fr; }
+}
+
+
+/* --- Improvements / balancing --- */
+.aud-wrap {
+  background: radial-gradient(900px 600px at 20% 10%, rgba(34,211,238,0.10), transparent 55%),
+              radial-gradient(700px 520px at 80% 30%, rgba(167,139,250,0.10), transparent 55%),
+              linear-gradient(180deg, rgba(10,14,22,0.35), rgba(0,0,0,0.25));
+}
+
+.aud-card {
+  background: rgba(10, 14, 22, 0.55);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.30);
+}
+
+.aud-action-wide {
+  grid-column: span 3;
+}
+
+.aud-btn-danger {
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  background: rgba(248, 113, 113, 0.12);
+}
+
+.aud-btn-danger:hover {
+  background: rgba(248, 113, 113, 0.18);
+}
+
+.aud-input-wide {
+  max-width: 420px;
+}
+
+.aud-appchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aud-chip {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.aud-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.aud-chip-active {
+  border-color: rgba(34, 211, 238, 0.35);
+  background: rgba(34, 211, 238, 0.12);
+}
+
+.aud-table-scroll {
+  max-height: 260px;
+  overflow: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.18);
+}
+
+.aud-table-scroll-card {
+  max-height: 220px;
+}
+
+.aud-table-scroll-history {
+  max-height: 340px;
+}
+
+.aud-table-scroll .aud-table {
+  margin: 0;
+}
+
+.aud-table thead th {
+  position: sticky;
+  top: 0;
+  background: rgba(10, 14, 22, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+.aud-kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.aud-kpi {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.aud-kpi span {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.aud-kpi strong {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.aud-history-table th:nth-child(1) { width: 160px; }
+.aud-history-table th:nth-child(2) { width: 120px; }
+.aud-history-table th:nth-child(3) { width: 140px; }
+.aud-history-table th:nth-child(4),
+.aud-history-table th:nth-child(5) { width: 140px; }
+.aud-history-table th:nth-child(6) { width: 120px; }
+.aud-history-table th:nth-child(7) { width: 140px; }
+
+.aud-history-note {
+  max-width: 360px;
+  white-space: normal;
+  line-height: 1.25;
+}

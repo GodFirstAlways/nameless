@@ -1,0 +1,759 @@
+/* ============================================
+   RESELLER DASHBOARD STYLES - ENHANCED
+   Compatible with existing tab switching logic
+   ============================================ */
+
+/* ===================
+   STATS CARDS - ENHANCED
+   =================== */
+
+.stats-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.stat-card {
+  @apply relative overflow-hidden;
+  @apply rounded-2xl border-2 border-white/10;
+  @apply bg-gradient-to-br from-slate-900/90 to-slate-800/80;
+  @apply backdrop-blur-xl p-6;
+  @apply transition-all duration-500;
+  @apply hover:scale-[1.02] hover:border-cyan-500/30;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.stat-card:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(6, 182, 212, 0.2);
+}
+
+.stat-card::before {
+  content: '';
+  @apply absolute top-0 left-0 w-1 h-full;
+  @apply bg-gradient-to-b from-cyan-400 via-cyan-500 to-blue-600;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+}
+
+.stat-content {
+  @apply flex items-center gap-4;
+}
+
+.stat-icon {
+  @apply text-4xl;
+  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.6));
+  @apply transition-transform duration-500;
+}
+
+.stat-card:hover .stat-icon {
+  @apply scale-110;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.6));
+  }
+  50% { 
+    filter: drop-shadow(0 0 20px rgba(6, 182, 212, 1));
+  }
+}
+
+.stat-details {
+  @apply flex-1;
+}
+
+.stat-value {
+  @apply text-3xl font-black;
+  @apply bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400 bg-clip-text text-transparent;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  text-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+  @apply transition-all duration-300 ease-in-out;
+  @apply min-w-[3rem] inline-block;
+}
+
+.stat-label {
+  @apply text-sm text-gray-400 uppercase tracking-widest mt-2;
+  font-family: 'JetBrains Mono', monospace;
+  @apply font-bold;
+}
+
+/* ===================
+   RECENT ACTIVITY - ENHANCED
+   =================== */
+
+.activity-list {
+  @apply space-y-3;
+}
+
+.activity-item {
+  @apply relative;
+  @apply p-5 rounded-xl;
+  @apply bg-gradient-to-r from-slate-900/60 to-slate-800/60;
+  @apply border border-white/5;
+  @apply transition-all duration-300;
+  @apply hover:bg-slate-800/70 hover:border-cyan-500/20;
+  @apply hover:scale-[1.01];
+  @apply grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 md:gap-6;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.activity-item:hover {
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.15);
+}
+
+.activity-item::before {
+  content: '';
+  @apply absolute left-0 top-0 bottom-0 w-1;
+  @apply bg-gradient-to-b from-cyan-400 to-blue-600;
+  @apply opacity-0 transition-opacity duration-300;
+}
+
+.activity-item:hover::before {
+  @apply opacity-100;
+}
+
+.activity-item > div:first-child {
+  @apply text-sm md:text-base text-gray-200 font-medium;
+}
+
+.activity-time {
+  @apply text-xs md:text-sm text-cyan-400 font-bold uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+  @apply self-center whitespace-nowrap;
+}
+
+/* ===================
+   STOCK CARDS - ENHANCED
+   =================== */
+
+/* ===================
+   STOCK SECTION LAYOUT
+   =================== */
+
+.stock-section-header {
+  @apply mt-10 mb-6;
+}
+
+.stock-section-header h2 {
+  @apply text-2xl font-black text-white mb-2;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+}
+
+.stock-section-header p {
+  @apply text-gray-400 text-sm;
+}
+
+.stock-overview {
+  @apply grid grid-cols-1 gap-6;
+}
+
+@media (min-width: 1024px) {
+  .stock-overview {
+    @apply grid-cols-2;
+  }
+}
+
+.stock-card {
+  @apply rounded-2xl;
+  @apply bg-gradient-to-br from-slate-900/95 to-slate-800/90;
+  @apply border-2 border-white/10;
+  @apply backdrop-blur-xl overflow-hidden;
+  @apply transition-all duration-500;
+  @apply hover:border-cyan-500/30;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.stock-card:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(6, 182, 212, 0.2);
+}
+
+.stock-card.locked {
+  @apply opacity-60;
+  @apply hover:border-white/10;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.stock-header {
+  @apply px-6 py-5;
+  @apply flex items-center justify-between gap-4;
+  @apply border-b-2 border-white/10;
+  @apply bg-gradient-to-r from-slate-950/50 to-slate-900/50;
+}
+
+.stock-title {
+  @apply text-xl font-black text-white;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  @apply tracking-wide;
+}
+
+.locked-badge {
+  @apply px-3 py-1.5 rounded-lg;
+  @apply bg-red-500/20 border-2 border-red-400/50 text-red-300;
+  @apply text-xs font-bold uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+.compensation-badge {
+  @apply px-3 py-1.5 rounded-lg;
+  @apply bg-purple-500/20 border-2 border-purple-400/50 text-purple-300;
+  @apply text-xs font-bold uppercase tracking-wider;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+}
+
+.stock-table {
+  @apply w-full text-sm;
+  table-layout: fixed;
+}
+
+.stock-table thead th {
+  @apply text-left text-xs text-cyan-300 uppercase tracking-widest;
+  @apply px-4 py-4;
+  font-family: 'JetBrains Mono', monospace;
+  @apply font-bold;
+  @apply bg-slate-950/30;
+}
+
+.stock-table thead th:nth-child(1) { width: 35%; }
+.stock-table thead th:nth-child(2) { width: 25%; }
+.stock-table thead th:nth-child(3) { width: 20%; }
+.stock-table thead th:nth-child(4) { width: 20%; }
+
+.stock-table tbody td {
+  @apply px-4 py-4 border-t border-white/5;
+  @apply overflow-hidden text-ellipsis;
+}
+
+.stock-table tbody tr {
+  @apply hover:bg-slate-900/40 transition-colors;
+}
+
+.available-cell {
+  @apply text-emerald-300 font-black text-base;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+}
+
+.used-cell {
+  @apply text-gray-400 font-semibold;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===================
+   KEY GENERATION CARD - ENHANCED
+   =================== */
+
+.generation-card {
+  @apply rounded-2xl;
+  @apply bg-gradient-to-br from-slate-900/95 to-slate-800/90;
+  @apply border-2 border-cyan-500/30;
+  @apply backdrop-blur-xl;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(6, 182, 212, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.key-gen-form {
+  @apply space-y-4;
+}
+
+.key-gen-form .form-row {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.key-gen-form label {
+  @apply block text-xs font-bold text-cyan-300 uppercase tracking-widest mb-2;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.key-gen-form input,
+.key-gen-form select {
+  @apply w-full px-4 py-3 rounded-xl;
+  @apply bg-slate-950/50 border-2 border-cyan-500/30;
+  @apply text-white font-semibold;
+  font-family: 'JetBrains Mono', monospace;
+  @apply placeholder:text-gray-600;
+  @apply focus:outline-none focus:border-cyan-400/60 focus:bg-slate-950/70;
+  @apply transition-all duration-300;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.key-gen-form input:focus,
+.key-gen-form select:focus {
+  box-shadow: 
+    inset 0 2px 10px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.generate-btn {
+  @apply relative overflow-hidden;
+  @apply w-full mt-4 px-6 py-4 rounded-xl;
+  @apply flex items-center justify-center gap-3;
+  @apply bg-gradient-to-r from-cyan-500 via-cyan-600 to-blue-600;
+  @apply hover:from-cyan-400 hover:via-cyan-500 hover:to-blue-500;
+  @apply text-white font-black text-base uppercase tracking-widest;
+  @apply transition-all duration-500;
+  @apply hover:scale-[1.02];
+  box-shadow: 
+    0 8px 30px rgba(6, 182, 212, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.generate-btn:hover {
+  box-shadow: 
+    0 12px 40px rgba(6, 182, 212, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.generate-btn::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full;
+  @apply bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  @apply -translate-x-full;
+  @apply transition-transform duration-1000;
+}
+
+.generate-btn:hover::before {
+  @apply translate-x-full;
+}
+
+/* ===================
+   PRODUCT SELECTOR - ENHANCED
+   =================== */
+
+.product-selector {
+  @apply relative;
+}
+
+.selected-product {
+  @apply w-full px-4 py-3 rounded-xl;
+  @apply bg-slate-950/50 border-2 border-cyan-500/30;
+  @apply text-white font-semibold;
+  @apply flex items-center justify-between;
+  @apply cursor-pointer;
+  @apply hover:bg-slate-900/60 hover:border-cyan-400/50;
+  @apply transition-all duration-300;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.selected-product:hover {
+  box-shadow: 
+    inset 0 2px 10px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.product-dropdown {
+  @apply hidden absolute left-0 right-0 mt-2;
+  @apply rounded-xl border-2 border-cyan-500/30;
+  @apply bg-slate-950/95 backdrop-blur-xl;
+  @apply overflow-hidden z-50;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(6, 182, 212, 0.3);
+}
+
+.product-dropdown.show {
+  @apply block;
+}
+
+.product-option {
+  @apply flex items-center gap-3;
+  @apply px-4 py-4;
+  @apply text-sm text-gray-200;
+  @apply border-b border-white/5 last:border-b-0;
+  @apply hover:bg-slate-900/60 cursor-pointer;
+  @apply transition-colors duration-200;
+}
+
+.product-option:hover {
+  @apply bg-gradient-to-r from-cyan-500/10 to-blue-500/10;
+}
+
+.product-option.locked {
+  @apply opacity-50 cursor-not-allowed;
+  @apply hover:bg-transparent;
+}
+
+.product-icon {
+  @apply w-12 h-12 rounded-xl;
+  @apply bg-gradient-to-br from-slate-800 to-slate-900;
+  @apply border-2 border-white/10;
+  @apply flex items-center justify-center text-2xl;
+  @apply transition-transform duration-300;
+}
+
+.product-option:hover .product-icon {
+  @apply scale-110;
+}
+
+.product-name {
+  @apply font-bold text-white text-base;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+}
+
+.locked-label {
+  @apply text-xs text-red-300 font-bold uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===================
+   GENERATED KEYS PANEL - ENHANCED
+   =================== */
+
+.generated-keys {
+  @apply mt-6 p-6 rounded-2xl;
+  @apply bg-emerald-500/10 border-2 border-emerald-500/30;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+}
+
+.keys-header {
+  @apply flex items-center justify-between gap-3 mb-5;
+}
+
+.keys-header h4 {
+  @apply text-lg font-black text-emerald-300;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+}
+
+.copy-all-btn {
+  @apply px-4 py-2 rounded-xl;
+  @apply bg-cyan-500/20 border-2 border-cyan-400/50;
+  @apply text-cyan-200 text-sm font-bold uppercase tracking-wider;
+  @apply hover:bg-cyan-500/30;
+  @apply transition-all duration-300;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+}
+
+.copy-all-btn:hover {
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+}
+
+.keys-list {
+  @apply space-y-3 max-h-80 overflow-auto pr-2;
+}
+
+.generated-key-item {
+  @apply flex items-center justify-between gap-3;
+  @apply p-4 rounded-xl;
+  @apply bg-slate-950/50 border border-emerald-500/20;
+  @apply transition-all duration-300;
+  @apply hover:bg-slate-900/60 hover:border-emerald-400/40;
+}
+
+.key-text {
+  @apply font-mono text-sm text-white font-bold break-all;
+  font-family: 'JetBrains Mono', monospace;
+  @apply select-all;
+}
+
+.copy-key-btn {
+  @apply px-3 py-2 rounded-xl;
+  @apply bg-emerald-500/20 border border-emerald-400/50;
+  @apply text-emerald-200 text-xs font-bold uppercase;
+  @apply hover:bg-emerald-500/30;
+  @apply transition-all duration-300;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.copy-key-btn:hover {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+/* ===================
+   USERS TABLE - ENHANCED
+   =================== */
+
+.users-table-container {
+  @apply overflow-x-auto;
+  @apply rounded-xl border border-white/10;
+  @apply bg-slate-950/30;
+}
+
+.users-table {
+  @apply w-full text-sm;
+}
+
+.users-table thead th {
+  @apply text-left text-xs text-cyan-300 uppercase tracking-widest;
+  @apply px-6 py-4;
+  @apply bg-slate-950/50;
+  @apply sticky top-0;
+  font-family: 'JetBrains Mono', monospace;
+  @apply font-bold;
+}
+
+.users-table tbody td {
+  @apply border-t border-white/5 py-4 px-6 align-middle;
+}
+
+.users-table tbody tr {
+  @apply hover:bg-slate-900/40 transition-colors;
+}
+
+/* ===================
+   MODALS - ENHANCED
+   =================== */
+
+.modal {
+  @apply fixed inset-0 z-50;
+  @apply bg-black/80 backdrop-blur-md;
+  @apply hidden items-center justify-center p-4;
+}
+
+.modal.show {
+  @apply flex;
+}
+
+.modal-content {
+  @apply w-full max-w-lg rounded-2xl;
+  @apply border-2 border-cyan-500/30;
+  @apply bg-slate-950/95 backdrop-blur-xl;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(6, 182, 212, 0.3);
+}
+
+.modal-header {
+  @apply px-6 py-5;
+  @apply border-b-2 border-white/10;
+  @apply flex items-center justify-between;
+  @apply bg-gradient-to-r from-slate-950/50 to-slate-900/50;
+}
+
+.modal-header h3 {
+  @apply text-xl font-black text-white;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+}
+
+.modal-body {
+  @apply px-6 py-6;
+}
+
+.modal-footer {
+  @apply px-6 py-5;
+  @apply border-t-2 border-white/10;
+  @apply flex items-center justify-end gap-3;
+  @apply bg-slate-950/30;
+}
+
+.muted {
+  @apply text-white/70;
+  font-size: 0.85em;
+}
+
+.warning-box {
+  @apply mt-3 px-4 py-3;
+  @apply rounded-lg border border-white/10;
+  @apply bg-white/5 text-white/80;
+  line-height: 1.4;
+}
+/* ===================
+   OVERVIEW (HOME) LAYOUT BALANCE FIXES
+   - Prevent Recent Activity from stretching Quick Actions
+   - Keep history readable via scroll (and optional columns)
+   =================== */
+
+.cards-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+  /* IMPORTANT: avoid equal-height stretching */
+  align-items: start;
+}
+
+.info-card {
+  @apply rounded-2xl border-2 border-white/10;
+  @apply bg-gradient-to-br from-slate-900/85 to-slate-800/70;
+  @apply backdrop-blur-xl overflow-hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.card-header {
+  @apply px-6 py-5;
+  @apply flex items-center justify-between gap-4;
+  @apply border-b border-white/10;
+  @apply bg-slate-950/30;
+}
+
+.card-header h3 {
+  @apply text-lg font-black text-white;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+}
+
+/* Recent Activity: cap height + smooth scrolling */
+.activity-list {
+  @apply p-6;
+  @apply space-y-3;
+  max-height: 26rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 1024px) {
+  .activity-list {
+    max-height: 32rem;
+  }
+}
+
+/* Optional: if you want multi-column history on wide screens, uncomment.
+@media (min-width: 1280px) {
+  .activity-list {
+    column-count: 2;
+    column-gap: 1rem;
+  }
+  .activity-item {
+    break-inside: avoid;
+  }
+}
+*/
+
+.quick-actions-list {
+  @apply p-6;
+  @apply space-y-3;
+}
+
+.action-btn {
+  @apply w-full;
+  @apply flex items-center gap-4;
+  @apply px-5 py-4 rounded-2xl;
+  @apply border border-white/10 bg-white/5;
+  @apply text-white font-semibold;
+  @apply hover:bg-cyan-500/10 hover:border-cyan-400/25;
+  @apply transition-all duration-300;
+}
+
+.action-icon {
+  @apply text-2xl;
+}
+
+.action-text {
+  @apply text-sm md:text-base;
+}
+
+/* ===================
+   USER MANAGEMENT POLISH
+   - Balance table density
+   - Make actions button/menu feel intentional
+   =================== */
+
+.bulk-actions-bar {
+  @apply sticky top-4 z-30;
+  @apply mb-6;
+  @apply px-5 py-4 rounded-2xl;
+  @apply border border-cyan-500/20;
+  @apply bg-slate-950/70 backdrop-blur-xl;
+  @apply flex flex-col md:flex-row md:items-center md:justify-between gap-4;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35), 0 0 18px rgba(6, 182, 212, 0.12);
+}
+
+.bulk-info {
+  @apply text-sm text-white/80 font-semibold;
+}
+
+.bulk-buttons {
+  @apply flex flex-wrap gap-2;
+}
+
+.bulk-btn {
+  @apply px-4 py-2 rounded-xl;
+  @apply text-[11px] font-black uppercase tracking-widest;
+  @apply bg-cyan-500/15 border border-cyan-400/30 text-cyan-100;
+  @apply hover:bg-cyan-500/25 hover:border-cyan-300/40;
+  @apply transition-all duration-200;
+}
+
+.bulk-btn.secondary {
+  @apply bg-white/5 border-white/10 text-white/80;
+  @apply hover:bg-white/10 hover:text-white;
+}
+
+.checkbox-cell {
+  width: 3rem;
+}
+
+.user-select {
+  @apply w-4 h-4;
+  accent-color: rgb(34 211 238);
+}
+
+.time-cell {
+  @apply text-sm leading-5;
+}
+
+.users-table tbody td code {
+  @apply inline-block;
+  @apply px-2 py-1 rounded-lg;
+  @apply bg-black/40 border border-white/10;
+  @apply text-xs text-white/90;
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-status {
+  @apply inline-flex items-center;
+  @apply px-3 py-1 rounded-full;
+  @apply text-[11px] font-black uppercase tracking-widest;
+  @apply border;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.user-status.active {
+  @apply bg-emerald-500/15 border-emerald-400/30 text-emerald-200;
+}
+
+.user-status.frozen {
+  @apply bg-sky-500/15 border-sky-400/30 text-sky-200;
+}
+
+.user-status.inactive,
+.user-status.disabled {
+  @apply bg-gray-500/15 border-gray-400/25 text-gray-200;
+}
+
+.user-status.banned,
+.user-status.suspended {
+  @apply bg-red-500/15 border-red-400/30 text-red-200;
+}
+
+.actions-trigger {
+  @apply inline-flex items-center justify-center;
+  @apply w-9 h-9 rounded-xl;
+  @apply border border-white/10;
+  @apply bg-white/5 text-white/80;
+  @apply hover:bg-cyan-500/15 hover:border-cyan-400/30 hover:text-cyan-100;
+  @apply transition-all duration-200;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.users-table tbody tr.selected {
+  @apply bg-cyan-500/10;
+}
+
+.actions-menu {
+  position: fixed;
+  @apply rounded-xl;
+  @apply border border-white/10;
+  @apply bg-slate-950/95 backdrop-blur-xl;
+  @apply p-2;
+  min-width: 190px;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.75), 0 0 35px rgba(6, 182, 212, 0.18);
+  z-index: 60;
+}
+
+.menu-item {
+  @apply flex items-center gap-3;
+  @apply px-4 py-3 rounded-lg;
+  @apply text-sm text-white/90;
+  @apply cursor-pointer;
+  @apply hover:bg-white/5;
+  @apply transition-colors duration-150;
+}
+
+.menu-item:active {
+  @apply bg-cyan-500/10;
+}
+
+.menu-icon {
+  @apply text-base;
+}
+
+.menu-text {
+  @apply font-semibold;
+}
+
