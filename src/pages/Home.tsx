@@ -29,9 +29,9 @@ export function Home() {
           const slug = 'nochance-external';
           const appCode = 'nochancext';
           const [imgs, media] = await Promise.all([
-            fetchProductImagesWithCache(slug),
-            fetchProductMediaWithCache(slug),
-            fetchProductMetaWithCache(slug)
+            fetchProductImagesWithCache(appCode),
+            fetchProductMediaWithCache(appCode),
+            fetchProductMetaWithCache(appCode)
           ]);
           await fetchPlanPricesWithCache(appCode);
           preloadImages((imgs || []) as string[]);

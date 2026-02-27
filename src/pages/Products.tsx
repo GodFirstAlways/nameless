@@ -103,9 +103,9 @@ export function Products() {
         for (const p of available) {
           try {
             const [meta, imgs, media] = await Promise.all([
-              fetchProductMetaWithCache(p.slug),
-              fetchProductImagesWithCache(p.slug),
-              fetchProductMediaWithCache(p.slug)
+              fetchProductMetaWithCache(p.appCode ?? p.slug),
+              fetchProductImagesWithCache(p.appCode ?? p.slug),
+              fetchProductMediaWithCache(p.appCode ?? p.slug)
             ]);
 
             await fetchPlanPricesWithCache(p.appCode);
