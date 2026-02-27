@@ -1,7 +1,9 @@
 // login.js - Authentication handler
 
 // API Configuration
-const API_BASE_URL = 'http://localhost:8000';
+// Prefer a globally injected value (set in index.html during Vite build),
+// with a local dev fallback.
+const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8000';
 
 // DOM Elements
 const loginForm = document.getElementById('loginForm');

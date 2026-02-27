@@ -12,6 +12,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Expose API base URL to legacy scripts and optional runtime overrides.
+      // Vite replaces %VITE_API_BASE_URL% at build time if it exists.
+      (function () {
+        const v = "%VITE_API_BASE_URL%";
+        if (typeof v === "string" && v && !v.includes("%")) {
+          window.API_BASE_URL = v;
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
