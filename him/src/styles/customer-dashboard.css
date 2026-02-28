@@ -13,6 +13,15 @@
   @apply shadow-2xl shadow-cyan-500/10;
 }
 
+.time-balances-list {
+  /* Keep the card compact; list scrolls instead of stretching */
+  @apply mt-4 space-y-4;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+
 .time-balance-item {
   @apply relative overflow-hidden;
   @apply p-5 mb-4 last:mb-0;

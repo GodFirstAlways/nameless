@@ -1,7 +1,7 @@
 import { Check, Clock, Shield, Zap } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchPlanPricesWithCache, fetchProductImagesWithCache, fetchProductMediaWithCache, fetchProductMetaWithCache } from '../lib/publicContent';
+import { fetchPlanPricesWithCache, fetchProductImagesWithCache, fetchProductMediaWithCache } from '../lib/publicContent';
 
 type SimpleProduct = {
   slug?: string;
@@ -102,23 +102,15 @@ export function Products() {
       void (async () => {
         for (const p of available) {
           try {
-            const [meta, imgs, media] = await Promise.all([
-              fetchProductMetaWithCache(p.appCode ?? p.slug),
-              fetchProductImagesWithCache(p.appCode ?? p.slug),
-              fetchProductMediaWithCache(p.appCode ?? p.slug)
+            const [imgs, media] = await Promise.all([
+              fetchProductImagesWithCache(p.appCode, 12 * 60 * 60 * 1000),
+              fetchProductMediaWithCache(p.appCode, 12 * 60 * 60 * 1000)
             ]);
 
-            await fetchPlanPricesWithCache(p.appCode);
+            await fetchPlanPricesWithCache(p.appCode, 60 * 60 * 1000);
 
             const urls = (imgs && imgs.length ? imgs : []) as string[];
             preloadImages(urls);
-
-            const video = (media || []).find((m: any) => m?.type === 'video' && (m?.featured || true));
-            if (video?.url) {
-              fetch(video.url, { method: 'HEAD' }).catch(() => undefined);
-            }
-
-            void meta;
           } catch {
             // ignore warm-cache failures
           }

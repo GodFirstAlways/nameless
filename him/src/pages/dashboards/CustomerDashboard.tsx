@@ -145,12 +145,37 @@ export function CustomerDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
-  const totals = useMemo(() => {
-    const products = account?.active_products || [];
-    const totalApps = products.length;
-    const totalSeconds = account?.total_unlimited ? 0 : account?.total_balance_seconds || 0;
-    return { totalApps, totalSeconds };
-  }, [account]);
+  const products = account?.active_products || [];
+
+  const accessibleAppCodes = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of downloads?.products || []) {
+      if (p?.has_access) set.add(p.app_code);
+    }
+    return set;
+  }, [downloads]);
+
+  // Only show products the customer actually has access to (or has time for),
+  // so future/locked apps don't clutter the list.
+  const visibleProducts = useMemo(() => {
+    let list = products;
+
+    if (accessibleAppCodes.size > 0) {
+      list = list.filter((p) => accessibleAppCodes.has(p.app_code));
+    }
+
+    // Show only what the customer can actually use.
+    return list.filter((p) => p.unlimited || (p.balance_seconds || 0) > 0);
+  }, [products, accessibleAppCodes]);
+
+  const totalSecondsVisible = useMemo(() => {
+    if (account?.total_unlimited) return 0;
+    return visibleProducts.reduce((sum, p) => sum + (p.balance_seconds || 0), 0);
+  }, [account, visibleProducts]);
+
+  const downloadableProducts = useMemo(() => {
+    return (downloads?.products || []).filter((p) => p.has_access);
+  }, [downloads]);
 
   async function onRedeem(e: FormEvent) {
     e.preventDefault();
@@ -199,8 +224,6 @@ export function CustomerDashboard() {
       setError(String(e?.message || e || 'HWID reset failed'));
     }
   }
-
-  const products = account?.active_products || [];
 
   return (
     <div className="dashboard-shell customer-dashboard">
@@ -273,14 +296,14 @@ export function CustomerDashboard() {
               <div className="info-card time-balances-card">
                 <div className="card-header">
                   <h3>Your Time Balances</h3>
-                  <span className="badge">{totals.totalApps}</span>
+                  <span className="badge">{visibleProducts.length}</span>
                 </div>
 
                 <div className="time-balances-list">
-                  {products.length === 0 ? (
+                  {visibleProducts.length === 0 ? (
                     <div className="loading">No active products yet.</div>
                   ) : (
-                    products.map((p) => (
+                    visibleProducts.map((p) => (
                       <div
                         key={p.app_code}
                         className={`time-balance-item ${p.unlimited || p.balance_seconds > 0 ? '' : 'expired'}`}
@@ -302,7 +325,7 @@ export function CustomerDashboard() {
                 <div className="total-time">
                   <span className="total-label">Total Time Remaining:</span>
                   <span className="total-value">
-                    {account?.total_unlimited ? 'Unlimited' : formatDuration(totals.totalSeconds, false)}
+                    {account?.total_unlimited ? 'Unlimited' : formatDuration(totalSecondsVisible, false)}
                   </span>
                 </div>
               </div>
@@ -354,10 +377,10 @@ export function CustomerDashboard() {
               </div>
 
               <div className="downloads-grid">
-                {(downloads?.products || []).length === 0 ? (
+                {downloadableProducts.length === 0 ? (
                   <div className="loading">No downloads available.</div>
                 ) : (
-                  (downloads?.products || []).map((p) => (
+                  downloadableProducts.map((p) => (
                     <div key={p.app_code} className="download-card accessible">
                       <div className="download-content" style={{ padding: 16 }}>
                         <h3 style={{ fontSize: 18, fontWeight: 700 }}>{p.name || p.app_code}</h3>
@@ -403,7 +426,7 @@ export function CustomerDashboard() {
                   </div>
 
                   <div className="hwid-products">
-                    {products.length === 0 ? (
+                    {visibleProducts.length === 0 ? (
                       <div className="loading">No products.</div>
                     ) : (
                       products

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { API_BASE_URL } from '../lib/config';
+import { TurnstileWidget } from '../components/TurnstileWidget';
 import { getDashboardPath, setAuth } from '../lib/auth';
 
 export function Login() {
@@ -14,6 +15,11 @@ export function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const loginTurnstileRequired = String(import.meta.env.VITE_TURNSTILE_LOGIN_REQUIRED || '').toLowerCase() === 'true';
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileWidgetId, setTurnstileWidgetId] = useState<string | null>(null);
+  const [forceTurnstileOnLogin, setForceTurnstileOnLogin] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -47,12 +53,25 @@ export function Login() {
       }
     }
 
+    const loginNeedsTurnstile = forceTurnstileOnLogin || loginTurnstileRequired;
+    // Turnstile: required for sign-up; optionally required for login.
+    if (isSignUp && !turnstileToken) {
+      setError('Complete the verification');
+      setLoading(false);
+      return;
+    }
+    if (!isSignUp && loginNeedsTurnstile && !turnstileToken) {
+      setError('Complete the verification');
+      setLoading(false);
+      return;
+    }
+
     try {
       if (isSignUp) {
         const resp = await fetch(`${API_BASE_URL}/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify({ username, password, turnstile_token: turnstileToken })
         });
         if (!resp.ok) {
           const data = await resp.json().catch(() => ({}));
@@ -70,7 +89,7 @@ export function Login() {
       const resp = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password, turnstile_token: turnstileToken || undefined })
       });
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) {
@@ -91,9 +110,23 @@ export function Login() {
       const role = String(data.role || '').toLowerCase();
       navigate(getDashboardPath(role), { replace: true });
     } catch (err: any) {
-      setError(err?.message || 'Authentication failed');
+      const msg = String(err?.message || 'Authentication failed');
+      // If backend requires Turnstile for login, force it on.
+      if (!isSignUp && /turnstile/i.test(msg)) {
+        setForceTurnstileOnLogin(true);
+      }
+      setError(msg);
     } finally {
       setLoading(false);
+      // Tokens are single-use; reset after each attempt.
+      if (turnstileWidgetId && (window as any).turnstile) {
+        try {
+          (window as any).turnstile.reset(turnstileWidgetId);
+        } catch {
+          // ignore
+        }
+      }
+      setTurnstileToken(null);
     }
   };
 
@@ -182,6 +215,18 @@ export function Login() {
             </div>
           )}
 
+          {(isSignUp || forceTurnstileOnLogin || loginTurnstileRequired) && (
+            <div className="flex justify-center">
+              <TurnstileWidget
+                key={isSignUp ? 'signup' : 'login'}
+                action={isSignUp ? 'register' : 'login'}
+                onToken={setTurnstileToken}
+                onWidgetId={setTurnstileWidgetId}
+                className="mt-2"
+              />
+            </div>
+          )}
+
           {!isSignUp && (
             <label className="flex items-center gap-2 text-sm text-gray-300">
               <input
@@ -209,6 +254,9 @@ export function Login() {
                 type="button"
                 onClick={() => {
                   setIsSignUp(!isSignUp);
+                  setTurnstileToken(null);
+                  setTurnstileWidgetId(null);
+                  setForceTurnstileOnLogin(false);
                   setError('');
                   setSuccess('');
                 }}

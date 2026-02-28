@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { useEffect } from 'react';
-import { fetchPlanPricesWithCache, fetchProductImagesWithCache, fetchProductMediaWithCache, fetchProductMetaWithCache } from '../lib/publicContent';
+import { fetchPlanPricesWithCache, fetchProductImagesWithCache, fetchProductMediaWithCache } from '../lib/publicContent';
 
 export function Home() {
 
@@ -26,17 +26,13 @@ export function Home() {
     schedule(() => {
       void (async () => {
         try {
-          const slug = 'nochance-external';
           const appCode = 'nochancext';
           const [imgs, media] = await Promise.all([
-            fetchProductImagesWithCache(appCode),
-            fetchProductMediaWithCache(appCode),
-            fetchProductMetaWithCache(appCode)
+            fetchProductImagesWithCache(appCode, 12 * 60 * 60 * 1000),
+            fetchProductMediaWithCache(appCode, 12 * 60 * 60 * 1000)
           ]);
-          await fetchPlanPricesWithCache(appCode);
+          await fetchPlanPricesWithCache(appCode, 60 * 60 * 1000);
           preloadImages((imgs || []) as string[]);
-          const video = (media || []).find((m: any) => m?.type === 'video' && (m?.featured || true));
-          if (video?.url) fetch(video.url, { method: 'HEAD' }).catch(() => undefined);
         } catch {
           // ignore warm-cache failures
         }
