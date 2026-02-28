@@ -12,7 +12,6 @@ import {
   AdminUserDetails,
   HwidHistoryEvent,
 } from '../../lib/adminUsersApi';
-import { API_BASE_URL } from '../../lib/config';
 import './admin-user-details.css';
 
 function fmtDate(iso?: string | null) {
@@ -97,6 +96,11 @@ async function refresh() {
 
 	const appToCredit = (data as any)?.entitlements?.apps?.[0] || appCodes[0] || 'nochancext';
 
+
+function apiBase(): string {
+  return ((window as any).API_BASE_URL as string) || 'http://localhost:8000';
+}
+
 function authHeaders(): Record<string, string> {
   const token =
     localStorage.getItem('authToken') ||
@@ -108,7 +112,7 @@ function authHeaders(): Record<string, string> {
 }
 
 async function fetchJSON<T>(method: string, path: string, body?: any): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`, {
+  const res = await fetch(`${apiBase()}${path}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
