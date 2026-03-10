@@ -31,6 +31,12 @@ let appReleasesFilter, refreshAppReleasesBtn, appReleasesList;
 let hiddenModuleUploadForm, moduleAppCode, moduleFile, moduleDescription, refreshModulesBtn, modulesList;
 let announcementForm, annAppCode, annVersion, annStatus, annTitle, annBody, refreshAnnouncementsBtn, announcementsList;
 
+// Offsets / Supported Versions
+let supportedVersionForm, svAppCode, svVersion, svTag, svMakeLatest;
+let offsetsUploadForm, offsetsAppCode, offsetsVersion, offsetsMakeLatest, offsetsFile;
+let offsetsFilterApp, refreshOffsetsBtn, supportedVersionsList, offsetsBundlesList;
+
+
 // ------------------------------------------------------------
 // In-memory options
 // ------------------------------------------------------------
@@ -150,6 +156,24 @@ function initAdminDashboard() {
   refreshAnnouncementsBtn = document.getElementById('refreshAnnouncementsBtn');
   announcementsList = document.getElementById('announcementsList');
 
+  // Offsets / Supported Versions
+  supportedVersionForm = document.getElementById('supportedVersionForm');
+  svAppCode = document.getElementById('svAppCode');
+  svVersion = document.getElementById('svVersion');
+  svTag = document.getElementById('svTag');
+  svMakeLatest = document.getElementById('svMakeLatest');
+
+  offsetsUploadForm = document.getElementById('offsetsUploadForm');
+  offsetsAppCode = document.getElementById('offsetsAppCode');
+  offsetsVersion = document.getElementById('offsetsVersion');
+  offsetsMakeLatest = document.getElementById('offsetsMakeLatest');
+  offsetsFile = document.getElementById('offsetsFile');
+
+  offsetsFilterApp = document.getElementById('offsetsFilterApp');
+  refreshOffsetsBtn = document.getElementById('refreshOffsetsBtn');
+  supportedVersionsList = document.getElementById('supportedVersionsList');
+  offsetsBundlesList = document.getElementById('offsetsBundlesList');
+
   initUserMenu();
   wireNav();
   wireLogout();
@@ -165,6 +189,7 @@ function initAdminDashboard() {
     loadAppReleases();
     loadModules();
     loadAnnouncements();
+    loadOffsetsAndVersions();
   });
   loadResellers();
 }
@@ -224,6 +249,8 @@ function wireForms() {
   if (appReleaseUploadForm) appReleaseUploadForm.addEventListener('submit', handleUploadAndPublishRelease);
   if (hiddenModuleUploadForm) hiddenModuleUploadForm.addEventListener('submit', handleUploadHiddenModule);
   if (announcementForm) announcementForm.addEventListener('submit', handlePublishAnnouncement);
+  if (supportedVersionForm) supportedVersionForm.addEventListener('submit', handleRegisterSupportedVersion);
+  if (offsetsUploadForm) offsetsUploadForm.addEventListener('submit', handleUploadOffsetsBundle);
 
   // Delegated actions for releases list
   if (appReleasesList) {
@@ -239,6 +266,32 @@ function wireForms() {
       }
       if (action === 'save') {
         await saveReleaseEdits(Number(id));
+      }
+    });
+  }
+
+  // Delegated actions for supported versions
+  if (supportedVersionsList) {
+    supportedVersionsList.addEventListener('click', async (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest('button[data-action]') : null;
+      if (!btn) return;
+      const action = btn.getAttribute('data-action');
+      const id = btn.getAttribute('data-id');
+      if (action === 'make-latest' && id) {
+        await setSupportedVersionLatest(Number(id));
+      }
+    });
+  }
+
+  // Delegated actions for offsets
+  if (offsetsBundlesList) {
+    offsetsBundlesList.addEventListener('click', async (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest('button[data-action]') : null;
+      if (!btn) return;
+      const action = btn.getAttribute('data-action');
+      const id = btn.getAttribute('data-id');
+      if (action === 'make-latest' && id) {
+        await setOffsetsBundleLatest(Number(id));
       }
     });
   }
@@ -312,6 +365,7 @@ function loadTabData(tabName) {
         loadAppReleases();
         loadModules();
         loadAnnouncements();
+        loadOffsetsAndVersions();
       });
       break;
     case 'resellers':
@@ -527,11 +581,11 @@ async function loadAppsOptions() {
 }
 
 function populateAppSelects() {
-  const selects = [appReleaseAppCode, moduleAppCode, annAppCode, appReleasesFilter];
+  const selects = [appReleaseAppCode, moduleAppCode, annAppCode, appReleasesFilter, svAppCode, offsetsAppCode, offsetsFilterApp];
   selects.forEach((sel) => {
     if (!sel) return;
     const current = String(sel.value || '');
-    const isFilter = sel === appReleasesFilter;
+    const isFilter = sel === appReleasesFilter || sel === offsetsFilterApp;
 
     const base = isFilter ? `<option value="">All apps</option>` : `<option value="">Select…</option>`;
     const opts = __apps
@@ -550,12 +604,23 @@ function populateAppSelects() {
 }
 
 function populateStatusSelect() {
-  if (!appReleaseStatus) return;
-  const current = String(appReleaseStatus.value || 'stable');
-  appReleaseStatus.innerHTML = __statusTags
-    .map((t) => `<option value="${escapeHtml(String(t.value))}">${escapeHtml(String(t.label || t.value))}</option>`)
-    .join('');
-  if (current) appReleaseStatus.value = current;
+  // Release status (artifact releases)
+  if (appReleaseStatus) {
+    const current = String(appReleaseStatus.value || 'stable');
+    appReleaseStatus.innerHTML = __statusTags
+      .map((t) => `<option value="${escapeHtml(String(t.value))}">${escapeHtml(String(t.label || t.value))}</option>`)
+      .join('');
+    if (current) appReleaseStatus.value = current;
+  }
+
+  // Supported version status tags (same tag set)
+  if (svTag) {
+    const current2 = String(svTag.value || 'stable');
+    svTag.innerHTML = (__statusTags.length ? __statusTags : FALLBACK_STATUS_TAGS)
+      .map((t) => `<option value="${escapeHtml(String(t.value))}">${escapeHtml(String(t.label || t.value))}</option>`)
+      .join('');
+    if (current2) svTag.value = current2;
+  }
 }
 
 function populateReleasesFilter() {
@@ -1163,6 +1228,191 @@ async function handleGiveStock(e) {
     loadResellerStock();
   } catch (err) {
     showError(err.message || 'Failed to give stock');
+  }
+}
+
+
+// ------------------------------------------------------------
+// Offsets & Supported Versions
+// ------------------------------------------------------------
+
+async function loadOffsetsAndVersions() {
+  const ac = offsetsFilterApp ? String(offsetsFilterApp.value || '').trim() : '';
+  await Promise.all([loadSupportedVersions(ac), loadOffsets(ac)]);
+}
+
+async function loadSupportedVersions(appCode) {
+  if (!supportedVersionsList) return;
+  supportedVersionsList.innerHTML = `<div class="loading">Loading supported versions...</div>`;
+  try {
+    const data = await api.listVersions(appCode || '');
+    const rows = (data && (data.versions || data)) || [];
+    renderSupportedVersions(Array.isArray(rows) ? rows : []);
+  } catch (err) {
+    supportedVersionsList.innerHTML = `<div class="empty">Failed to load supported versions.</div>`;
+    showError(err.message || 'Failed to load supported versions');
+  }
+}
+
+function renderSupportedVersions(rows) {
+  if (!supportedVersionsList) return;
+  if (!rows.length) {
+    supportedVersionsList.innerHTML = `<div class="empty">No supported versions found.</div>`;
+    return;
+  }
+
+  supportedVersionsList.innerHTML = rows
+    .slice(0, 100)
+    .map((r) => {
+      const id = Number(r.id);
+      const ac = String(r.app_code || '');
+      const ver = String(r.version || '');
+      const tag = String(r.tag || 'stable');
+      const isLatest = Boolean(r.is_latest);
+      return `
+        <div class="release-row">
+          <div class="release-main">
+            <div class="release-title">
+              <strong>${escapeHtml(getProductName(ac))}</strong>
+              <span class="muted">(${escapeHtml(ac)})</span>
+            </div>
+            <div class="release-meta">
+              <span class="badge">${escapeHtml(tag)}</span>
+              <span class="muted">v${escapeHtml(ver)}</span>
+              ${isLatest ? `<span class="badge">latest</span>` : ``}
+              <span class="muted">${escapeHtml(formatDate(r.created_at))}</span>
+            </div>
+          </div>
+          <div class="release-actions">
+            ${
+              isLatest
+                ? `<button type="button" class="btn-secondary" disabled>Latest</button>`
+                : `<button type="button" class="btn-secondary" data-action="make-latest" data-id="${id}">Make latest</button>`
+            }
+          </div>
+        </div>
+      `;
+    })
+    .join('');
+}
+
+async function loadOffsets(appCode) {
+  if (!offsetsBundlesList) return;
+  offsetsBundlesList.innerHTML = `<div class="loading">Loading offsets...</div>`;
+  try {
+    const data = await api.listOffsets(appCode || '');
+    const rows = (data && (data.offsets || data)) || [];
+    renderOffsets(Array.isArray(rows) ? rows : []);
+  } catch (err) {
+    offsetsBundlesList.innerHTML = `<div class="empty">Failed to load offsets.</div>`;
+    showError(err.message || 'Failed to load offsets');
+  }
+}
+
+function renderOffsets(rows) {
+  if (!offsetsBundlesList) return;
+  if (!rows.length) {
+    offsetsBundlesList.innerHTML = `<div class="empty">No offsets uploaded yet.</div>`;
+    return;
+  }
+
+  offsetsBundlesList.innerHTML = rows
+    .slice(0, 100)
+    .map((r) => {
+      const id = Number(r.id);
+      const ac = String(r.app_code || '');
+      const ver = String(r.version || '');
+      const sha = String(r.sha256 || '').slice(0, 12);
+      const isLatest = Boolean(r.is_latest);
+      return `
+        <div class="release-row">
+          <div class="release-main">
+            <div class="release-title">
+              <strong>${escapeHtml(getProductName(ac))}</strong>
+              <span class="muted">(${escapeHtml(ac)})</span>
+            </div>
+            <div class="release-meta">
+              <span class="muted">v${escapeHtml(ver)}</span>
+              ${isLatest ? `<span class="badge">latest</span>` : ``}
+              <span class="muted">sha:${escapeHtml(sha)}</span>
+              <span class="muted">${escapeHtml(formatDate(r.created_at))}</span>
+            </div>
+          </div>
+          <div class="release-actions">
+            ${
+              isLatest
+                ? `<button type="button" class="btn-secondary" disabled>Latest</button>`
+                : `<button type="button" class="btn-secondary" data-action="make-latest" data-id="${id}">Make latest</button>`
+            }
+          </div>
+        </div>
+      `;
+    })
+    .join('');
+}
+
+async function handleRegisterSupportedVersion(e) {
+  e.preventDefault();
+  try {
+    const appCode = svAppCode ? String(svAppCode.value || '').trim() : '';
+    const version = svVersion ? String(svVersion.value || '').trim() : '';
+    const tag = svTag ? String(svTag.value || 'stable').trim() : 'stable';
+    const makeLatest = String(svMakeLatest?.value || 'true') === 'true';
+
+    if (!appCode || !version) {
+      showError('app_code and version are required');
+      return;
+    }
+
+    await api.registerVersion(appCode, version, tag, makeLatest);
+    showSuccess('Supported version registered');
+    if (svVersion) svVersion.value = '';
+    await loadOffsetsAndVersions();
+  } catch (err) {
+    showError(err.message || 'Failed to register version');
+  }
+}
+
+async function handleUploadOffsetsBundle(e) {
+  e.preventDefault();
+  try {
+    const appCode = offsetsAppCode ? String(offsetsAppCode.value || '').trim() : '';
+    const version = offsetsVersion ? String(offsetsVersion.value || '').trim() : '';
+    const makeLatest = String(offsetsMakeLatest?.value || 'true') === 'true';
+    const file = offsetsFile && offsetsFile.files && offsetsFile.files[0] ? offsetsFile.files[0] : null;
+
+    if (!appCode || !version || !file) {
+      showError('app_code, version, and offsets JSON file are required');
+      return;
+    }
+
+    await api.uploadOffsetsBundle(file, appCode, version, makeLatest);
+    showSuccess('Offsets uploaded');
+    if (offsetsVersion) offsetsVersion.value = '';
+    if (offsetsFile) offsetsFile.value = '';
+    await loadOffsetsAndVersions();
+  } catch (err) {
+    showError(err.message || 'Failed to upload offsets');
+  }
+}
+
+async function setSupportedVersionLatest(versionId) {
+  try {
+    await api.setVersionLatest(versionId, true);
+    showSuccess('Version marked as latest');
+    await loadOffsetsAndVersions();
+  } catch (err) {
+    showError(err.message || 'Failed to set latest version');
+  }
+}
+
+async function setOffsetsBundleLatest(bundleId) {
+  try {
+    await api.setOffsetsLatest(bundleId, true);
+    showSuccess('Offsets marked as latest');
+    await loadOffsetsAndVersions();
+  } catch (err) {
+    showError(err.message || 'Failed to set latest offsets');
   }
 }
 

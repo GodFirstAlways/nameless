@@ -240,6 +240,41 @@ class AdminAPI {
     return await this.requestJSON('GET', `/admin/versions${qs}`);
   }
 
+  async registerVersion(appCode, version, tag = 'stable', makeLatest = true) {
+    const fd = new FormData();
+    fd.append('app_code', String(appCode || '').trim());
+    fd.append('version', String(version || '').trim());
+    if (tag) fd.append('tag', String(tag || 'stable'));
+    fd.append('make_latest', String(Boolean(makeLatest)));
+    return await this.requestForm('POST', '/admin/versions', fd);
+  }
+
+  async setVersionLatest(versionId, isLatest = true) {
+    return await this.requestJSON('PATCH', `/admin/versions/${Number(versionId)}`, { is_latest: Boolean(isLatest) });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Offsets (JSON bundles)
+  // ---------------------------------------------------------------------------
+
+  async uploadOffsetsBundle(file, appCode, version, makeLatest = true) {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('app_code', String(appCode || '').trim());
+    fd.append('version', String(version || '').trim());
+    fd.append('make_latest', String(Boolean(makeLatest)));
+    return await this.requestForm('POST', '/admin/offsets/upload', fd);
+  }
+
+  async listOffsets(appCode = '') {
+    const qs = appCode ? `?${new URLSearchParams({ app_code: appCode }).toString()}` : '';
+    return await this.requestJSON('GET', `/admin/offsets${qs}`);
+  }
+
+  async setOffsetsLatest(bundleId, isLatest = true) {
+    return await this.requestJSON('PATCH', `/admin/offsets/${Number(bundleId)}`, { is_latest: Boolean(isLatest) });
+  }
+
   // ---------------------------------------------------------------------------
   // Announcements
   // ---------------------------------------------------------------------------
